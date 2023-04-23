@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayButton : MonoBehaviour
 {
     public InventoryList inventoryList;
-    public InventoryListSequence inventoryListSequence;
+    public GameObject linePrefab;
+    public Transform lineParent;
+    public Vector2 startingPoint;
 
     private List<Direction> properSequence = new List<Direction>() { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
 
@@ -19,14 +21,36 @@ public class PlayButton : MonoBehaviour
             userSequence.Add(item.direction);
         }
 
-        // Check if the user's sequence matches the proper sequence
-        if (CompareSequences(userSequence, properSequence))
+        List<Direction> inventorySequence = new List<Direction>();
+
+        // Get the direction of each item in the inventory list sequence
+        foreach (InventoryItem item in inventoryList.items)
         {
+            inventorySequence.Add(item.direction);
+        }
+
+        //// Check if the user's sequence matches the proper sequence
+        //if (CompareSequences(userSequence, properSequence))
+        //{
+        //    Debug.Log("Sequence matches!");
+        //    DrawLine(inventoryList.items);
+        //}
+        //else
+        //{
+        //    Debug.Log("Sequence does not match.");
+        //}
+
+        // Check if the inventory list sequence matches the user's sequence
+        if (CompareSequences(inventorySequence, userSequence))
+        {
+            Debug.Log("Inventory list sequence matches user sequence!");
             Debug.Log("Sequence matches!");
+            DrawLine(inventoryList.items);
         }
         else
         {
-            Debug.Log("Sequence does not match.");
+            Debug.Log("Inventory list sequence does not match user sequence.");
+
         }
     }
 
@@ -46,5 +70,47 @@ public class PlayButton : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void DrawLine(List<InventoryItem> inventoryList)
+    {
+        // Create a new line game object
+        GameObject newLine = Instantiate(linePrefab, lineParent);
+
+        // Set the starting position of the line
+        Vector2 currentPosition = startingPoint;
+
+        // Draw the line based on the inventory list
+        List<InventoryItem> inventoryItems = new List<InventoryItem>();
+        for (int i = 0; i < inventoryList.Count; i++)
+        {
+            Vector2 nextPosition = currentPosition;
+
+            // Update the position based on the inventory item direction
+            switch (inventoryList[i].direction)
+            {
+                case Direction.Up:
+                    nextPosition += Vector2.up;
+                    break;
+                case Direction.Down:
+                    nextPosition += Vector2.down;
+                    break;
+                case Direction.Left:
+                    nextPosition += Vector2.left;
+                    break;
+                case Direction.Right:
+                    nextPosition += Vector2.right;
+                    break;
+            }
+
+            // Draw a line between the current position and the next position
+            LineRenderer lineRenderer = newLine.GetComponent<LineRenderer>();
+            lineRenderer.positionCount = i + 2;
+            lineRenderer.SetPosition(i, currentPosition);
+            lineRenderer.SetPosition(i + 1, nextPosition);
+
+            // Update the current position
+            currentPosition = nextPosition;
+        }
     }
 }
