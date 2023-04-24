@@ -9,7 +9,7 @@ public class PlayButton : MonoBehaviour
     public Transform lineParent;
     public Vector2 startingPoint;
 
-    private List<Direction> properSequence = new List<Direction>() { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
+    public List<Direction> properSequence = new List<Direction>(); //{ Direction.Up, Direction.Down, Direction.Left, Direction.Right };
 
     public void OnButtonClick()
     {
@@ -29,28 +29,16 @@ public class PlayButton : MonoBehaviour
             inventorySequence.Add(item.direction);
         }
 
-        //// Check if the user's sequence matches the proper sequence
-        //if (CompareSequences(userSequence, properSequence))
-        //{
-        //    Debug.Log("Sequence matches!");
-        //    DrawLine(inventoryList.items);
-        //}
-        //else
-        //{
-        //    Debug.Log("Sequence does not match.");
-        //}
-
-        // Check if the inventory list sequence matches the user's sequence
-        if (CompareSequences(inventorySequence, userSequence))
+        // Check if the user's sequence matches the proper sequence
+        if (CompareSequences(userSequence, properSequence))
         {
-            Debug.Log("Inventory list sequence matches user sequence!");
             Debug.Log("Sequence matches!");
             DrawLine(inventoryList.items);
         }
         else
         {
-            Debug.Log("Inventory list sequence does not match user sequence.");
-
+            Debug.Log("Sequence does not match.");
+            DrawLine(inventoryList.items);
         }
     }
 
@@ -58,6 +46,7 @@ public class PlayButton : MonoBehaviour
     {
         if (sequence1.Count != sequence2.Count)
         {
+            Debug.Log("Sequence count not match");
             return false;
         }
 
