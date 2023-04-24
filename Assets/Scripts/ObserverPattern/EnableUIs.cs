@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnableUIs : MonoBehaviour, IObserver
@@ -9,7 +7,6 @@ public class EnableUIs : MonoBehaviour, IObserver
     [SerializeField] GameObject levelReload;
     public void OnNotify(UIPanels panels)
     {
-
         switch(panels)
         {
             case (UIPanels.LevelComplete):
@@ -18,15 +15,7 @@ public class EnableUIs : MonoBehaviour, IObserver
             case (UIPanels.LevelReload):
                 levelReload.SetActive(true);
                 break;
-
         }
-
-
-        if(panels == UIPanels.LevelComplete)
-        {
-            levelCompletePanel.SetActive(true);
-        }
-        Debug.Log("UI notified");
     }
 
     private void OnEnable()

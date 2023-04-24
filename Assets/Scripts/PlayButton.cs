@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,10 +8,7 @@ public class PlayButton : Subject
     public Transform lineParent;
     public Vector2 startingPoint;
    
-
-    public List<Direction> properSequence = new List<Direction>(); //{ Direction.Up, Direction.Down, Direction.Left, Direction.Right };
-
-
+    public List<Direction> properSequence = new List<Direction>();
 
     public void OnButtonClick()
     {
@@ -36,15 +31,11 @@ public class PlayButton : Subject
         // Check if the user's sequence matches the proper sequence
         if (CompareSequences(userSequence, properSequence))
         {
-            Debug.Log("Sequence matches!");
             DrawLine(inventoryList.items);
             NotifyObservers(UIPanels.LevelComplete);
-
-
         }
         else
         {
-            Debug.Log("Sequence does not match.");
             DrawLine(inventoryList.items);
             NotifyObservers(UIPanels.LevelReload);
         }
